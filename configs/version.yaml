@@ -1,0 +1,28 @@
+# =============================================================================
+# VERSIONING STRATEGY
+# =============================================================================
+
+version: "v0.0.1"
+
+# Version scheme: MAJOR.MINOR.PATCH
+# v0.x.x = research / experimental
+# v1.x.x = stable prototype
+# v2.x.x = advanced agent
+# v3.x.x = multimodal
+
+semver:
+  major: 0
+  minor: 0
+  patch: 1
+
+# Git tagging strategy
+# git tag v0.0.1
+# git tag v0.0.2
+# ...
+# git tag v1.0.0  (stable prototype milestone)
+
+milestones:
+  v0.0.1: "Project foundation and architecture"
+  v1.0.0: "Stable tiny language model with training/inference"
+  v2.0.0: "Agent system with memory, tools, reasoning"
+  v3.0.0: "Multimodal capabilities (vision)"

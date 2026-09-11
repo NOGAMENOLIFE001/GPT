@@ -1,0 +1,66 @@
+# =============================================================================
+# DATASET CONFIGURATION
+# =============================================================================
+
+default:
+  dataset_name: "d1_clean_text"
+  dataset_path: "datasets/d1_clean_text"
+  max_tokens: 100000
+  min_doc_length: 10
+  max_doc_length: 512
+
+datasets:
+  d1:
+    name: "clean_text"
+    description: "Curated clean English text samples"
+    path: "datasets/d1_clean_text"
+    languages: ["en"]
+    size: "small"  # very small due to RAM constraints
+
+  d2:
+    name: "russian_text"
+    description: "Russian language text samples"
+    path: "datasets/d2_russian_text"
+    languages: ["ru"]
+    size: "small"
+
+  d3:
+    name: "english_text"
+    description: "English language text samples"
+    path: "datasets/d3_english_text"
+    languages: ["en"]
+    size: "small"
+
+  d4:
+    name: "code"
+    description: "Source code samples"
+    path: "datasets/d4_code"
+    languages: ["en"]
+    size: "small"
+
+  d5:
+    name: "dialogue"
+    description: "Conversation dialogue samples"
+    path: "datasets/d5_dialogue"
+    languages: ["mixed"]
+    size: "small"
+
+  d6:
+    name: "mixed"
+    description: "Mixed multilingual dataset"
+    path: "datasets/d6_mixed"
+    languages: ["en", "ru", "mixed"]
+    size: "small"
+
+tokenizer:
+  name: "bpe"
+  vocab_size: 1024
+  special_tokens:
+    pad: "<pad>"
+    unk: "<unk>"
+    bos: "<bos>"
+    eos: "<eos>"
+
+train_split: 0.9
+val_split: 0.1
+shuffle: true

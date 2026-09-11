@@ -1,0 +1,30 @@
+{
+  "name": "AIOS",
+  "description": "Artificial Intelligence system built from scratch with custom model, tokenizer, training pipeline, and agent architecture. No external AI APIs.",
+  "version": "v0.0.1",
+  "language": "python",
+  "framework": "pytorch-cpu",
+  "hardware": {
+    "cpu": "AMD Ryzen 5 5500U",
+    "cores": 12,
+    "gpu": "none",
+    "ram_gb": 5.8,
+    "cuda_available": false
+  },
+  "coding_standards": {
+    "config_in_yaml": true,
+    "no_hardcoded_params": true,
+    "unit_tests_required": true,
+    "type_hints": true,
+    "simple_over_complex": true
+  },
+  "experiment_workflow": true,
+  "research_log": "docs/RESEARCH_LOG.md",
+  "gitignore": [
+    "checkpoints/*.pt",
+    "checkpoints/**/*.pt",
+    "__pycache__/",
+    "*.pyc",
+    ".env"
+  ]
+}

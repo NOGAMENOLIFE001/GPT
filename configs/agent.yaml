@@ -1,0 +1,45 @@
+# =============================================================================
+# AGENT CONFIGURATION
+# =============================================================================
+
+agent:
+  name: "AIOS"
+  version: "v0.0.1"
+
+  # Agent Loop
+  max_iterations: 10
+  max_tokens_per_turn: 512
+
+  # Memory
+  short_term:
+    window_size: 8  # number of recent exchanges to keep in context
+  long_term:
+    enabled: true
+    max_entries: 1000
+  episodic:
+    enabled: true
+    max_episodes: 100
+
+  # Tools
+  tools:
+    - name: "calculator"
+      enabled: true
+    - name: "filesystem"
+      enabled: true
+    - name: "python_exec"
+      enabled: true
+
+  # Safety
+  safety:
+    max_tool_calls: 10
+    max_recursion_depth: 5
+    blocked_patterns: []
+
+# Reasoning / Planning
+reasoning:
+  strategy: "decomposition"
+  max_depth: 5
+
+planning:
+  strategy: "seq_plan"
+  max_steps: 10

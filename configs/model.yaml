@@ -1,0 +1,79 @@
+# =============================================================================
+# MODEL CONFIGURATION
+# =============================================================================
+# All model architecture parameters are defined here.
+# Never hardcode model hyperparameters in source code.
+
+default:
+  variant: "tiny"  # tiny, small, medium, large
+
+  # Token Embedding & Output
+  vocab_size: 1024
+  embedding_dim: 128
+
+  # Transformer Architecture
+  num_layers: 2
+  num_heads: 2
+  hidden_dim: 256
+  context_length: 64
+
+  # Regularization
+  dropout: 0.1
+  attention_dropout: 0.1
+
+  # Positional Encoding
+  positional_encoding: "rope"  # rope, sinusoidal, learned
+  rope_base: 10000.0
+
+  # Activation
+  activation: "gelu"  # gelu, relu, silu
+
+  # Output
+  tie_weights: true  # tie input/output embeddings to save parameters
+
+# Hardware-constrained sizes (CPU-only, 5.8 GB RAM)
+tiny:
+  vocab_size: 1024
+  embedding_dim: 128
+  num_layers: 2
+  num_heads: 2
+  hidden_dim: 256
+  context_length: 64
+  dropout: 0.1
+  # Estimated params: ~0.5M
+
+small:
+  vocab_size: 2048
+  embedding_dim: 256
+  num_layers: 4
+  num_heads: 4
+  hidden_dim: 512
+  context_length: 128
+  dropout: 0.1
+  # Estimated params: ~5M
+
+medium:
+  vocab_size: 4096
+  embedding_dim: 512
+  num_layers: 6
+  num_heads: 8
+  hidden_dim: 1024
+  context_length: 256
+  dropout: 0.1
+  # Estimated params: ~20M
+
+large:
+  vocab_size: 8192
+  embedding_dim: 768
+  num_layers: 8
+  num_heads: 12
+  hidden_dim: 1536
+  context_length: 512
+  dropout: 0.1
+  # Estimated params: ~50M
+
+# Parameter estimation formula:
+# params = vocab_size * embedding_dim + num_layers * (
+#   4 * embedding_dim^2  (QKV + output projection in MHA)
+#   + 2 * embedding_dim * hidden_dim  (FFN)
+# ) + ... (norms, biases, output head)

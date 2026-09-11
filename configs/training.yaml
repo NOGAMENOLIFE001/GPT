@@ -1,0 +1,58 @@
+# =============================================================================
+# TRAINING CONFIGURATION
+# =============================================================================
+# All training hyperparameters defined here.
+
+default:
+  # Optimizer
+  optimizer: "adamw"
+  learning_rate: 0.0003
+  weight_decay: 0.01
+  betas: [0.9, 0.95]
+  eps: 1.0e-8
+
+  # Learning Rate Schedule
+  scheduler: "cosine"
+  warmup_steps: 100
+  min_lr_ratio: 0.1
+
+  # Batching
+  batch_size: 4
+  gradient_accumulation_steps: 1
+  max_seq_length: 64
+
+  # Training Duration
+  max_steps: 5000
+  eval_interval: 250
+  eval_iters: 10
+
+  # Gradient Clipping
+  max_grad_norm: 1.0
+
+  # Mixed Precision (not available on CPU-only)
+  use_amp: false
+  dtype: "float32"
+
+  # Checkpointing
+  checkpoint_interval: 500
+  save_dir: "checkpoints"
+  save_best_only: false
+  keep_last_n: 3
+
+  # Random Seed
+  seed: 42
+
+  # Logging
+  log_interval: 10
+  log_dir: "logs"
+  log_level: "INFO"
+
+  # Early Stopping
+  early_stopping: false
+  patience: 500
+  min_delta: 0.0
+
+  # Hardware
+  num_workers: 0
+  device: "cpu"
+  pin_memory: false
