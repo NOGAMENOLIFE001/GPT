@@ -1,0 +1,114 @@
+# EXP-002 Experiment Configuration
+# Data Scaling & Early Stopping
+# Based on EXP-001 baseline with expanded dataset and early stopping
+
+experiment:
+  id: "EXP-002"
+  name: "Data Scaling & Early Stopping"
+  phase: 1
+  date: "2026-09-11"
+  hypothesis: "Expanded dataset (~38K tokens) with early stopping eliminates overfitting"
+  baseline: "BASELINE-v0.0.1"
+  parent_experiment: "EXP-001"
+
+hardware:
+  cpu: "AMD Ryzen 5 5500U"
+  cores: 12
+  ram_gb: 5.8
+  gpu: "none"
+  cuda_available: false
+  pytorch_version: "2.13.0+cpu"
+  python_version: "3.14.3"
+  numpy_version: "2.5.2"
+
+seed: 42
+
+model:
+  variant: "tiny"
+  vocab_size: 1024
+  embedding_dim: 128
+  num_layers: 2
+  num_heads: 2
+  hidden_dim: 256
+  context_length: 64
+  dropout: 0.1
+  attention_dropout: 0.1
+  positional_encoding: "rope"
+  rope_base: 10000.0
+  activation: "gelu"
+  tie_weights: true
+
+training:
+  optimizer: "adamw"
+  learning_rate: 0.0003
+  weight_decay: 0.01
+  betas: [0.9, 0.95]
+  eps: 1.0e-8
+  scheduler: "cosine"
+  warmup_steps: 100
+  min_lr_ratio: 0.1
+  batch_size: 4
+  gradient_accumulation_steps: 1
+  max_seq_length: 64
+  max_steps: 10000
+  eval_interval: 250
+  eval_iters: 20
+  max_grad_norm: 1.0
+  use_amp: false
+  dtype: "float32"
+  checkpoint_interval: 500
+  save_dir: "checkpoints/EXP-002"
+  save_best_only: false
+  keep_last_n: 3
+  log_interval: 10
+  log_dir: "logs/EXP-002"
+  log_level: "INFO"
+  early_stopping: true
+  patience: 500
+  min_delta: 0.001
+  num_workers: 0
+  device: "cpu"
+  pin_memory: false
+
+dataset:
+  dataset_name: "d1_clean_text"
+  dataset_path: "datasets/d1_clean_text"
+  max_tokens: 100000
+  min_doc_length: 10
+  max_doc_length: 64
+  train_split: 0.9
+  val_split: 0.1
+  shuffle: true
+
+tokenizer:
+  name: "bpe"
+  vocab_size: 1024
+  special_tokens:
+    pad: "<pad>"
+    unk: "那些"
+    bos: "<bos>"
+    eos: "<eos>"
+
+success_criteria:
+  train_loss_target: 2.0
+  train_loss_acceptable: 3.0
+  val_loss_target: 2.5
+  val_loss_acceptable: 3.5
+  perplexity_target: 12.0
+  perplexity_acceptable: 30.0
+  training_time_max_hours: 2
+  peak_ram_gb_max: 2.0
+  model_size_mb_max: 5.0
+  no_val_divergence: true
+  early_stop_triggered: true
+
+metrics:
+  - "train_loss"
+  - "val_loss"
+  - "perplexity"
+  - "learning_rate"
+  - "grad_norm"
+  - "tokens_per_second"
+  - "step_time_ms"
+  - "peak_memory_mb"
+  - "early_stop_step"

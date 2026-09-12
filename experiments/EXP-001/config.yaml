@@ -1,0 +1,129 @@
+# EXP-001 Experiment Configuration
+# Full reproducibility config for the first training experiment
+# Generated from baseline configs: model.yaml, training.yaml, dataset.yaml
+
+experiment:
+  id: "EXP-001"
+  name: "First Training Pipeline & Tiny Language Model"
+  phase: 1
+  date: "2026-09-11"
+  hypothesis: "Tiny transformer can learn next-token prediction on CPU"
+  baseline: "BASELINE-v0.0.1"
+
+# Hardware Environment
+hardware:
+  cpu: "AMD Ryzen 5 5500U"
+  cores: 12
+  ram_gb: 5.8
+  gpu: "none"
+  cuda_available: false
+  pytorch_version: "2.13.0+cpu"
+  python_version: "3.14.3"
+  numpy_version: "2.5.2"
+
+# Random Seed for reproducibility
+seed: 42
+
+# =============================================================================
+# MODEL CONFIGURATION (from configs/model.yaml - tiny variant)
+# =============================================================================
+model:
+  variant: "tiny"
+  vocab_size: 1024
+  embedding_dim: 128
+  num_layers: 2
+  num_heads: 2
+  hidden_dim: 256
+  context_length: 64
+  dropout: 0.1
+  attention_dropout: 0.1
+  positional_encoding: "rope"
+  rope_base: 10000.0
+  activation: "gelu"
+  tie_weights: true
+  # Estimated parameters: ~430K
+  # Estimated model size (fp32): ~1.7 MB
+
+# =============================================================================
+# TRAINING CONFIGURATION (from configs/training.yaml - default)
+# =============================================================================
+training:
+  optimizer: "adamw"
+  learning_rate: 0.0003
+  weight_decay: 0.01
+  betas: [0.9, 0.95]
+  eps: 1.0e-8
+  scheduler: "cosine"
+  warmup_steps: 100
+  min_lr_ratio: 0.1
+  batch_size: 4
+  gradient_accumulation_steps: 1
+  max_seq_length: 64
+  max_steps: 5000
+  eval_interval: 250
+  eval_iters: 10
+  max_grad_norm: 1.0
+  use_amp: false
+  dtype: "float32"
+  checkpoint_interval: 500
+  save_dir: "checkpoints/EXP-001"
+  save_best_only: false
+  keep_last_n: 3
+  log_interval: 10
+  log_dir: "logs/EXP-001"
+  log_level: "INFO"
+  early_stopping: false
+  patience: 500
+  min_delta: 0.0
+  num_workers: 0
+  device: "cpu"
+  pin_memory: false
+
+# =============================================================================
+# DATASET CONFIGURATION (from configs/dataset.yaml - d1)
+# =============================================================================
+dataset:
+  dataset_name: "d1_clean_text"
+  dataset_path: "datasets/d1_clean_text"
+  max_tokens: 100000
+  min_doc_length: 10
+  max_doc_length: 64
+  train_split: 0.9
+  val_split: 0.1
+  shuffle: true
+
+tokenizer:
+  name: "bpe"
+  vocab_size: 1024
+  special_tokens:
+    pad: "<pad>"
+    unk: "那些"
+    bos: "<bos>"
+    eos: "<eos>"
+
+# =============================================================================
+# EXPECTED OUTCOMES / SUCCESS CRITERIA
+# =============================================================================
+success_criteria:
+  train_loss_target: 2.0
+  train_loss_acceptable: 3.0
+  val_loss_target: 2.5
+  val_loss_acceptable: 3.5
+  perplexity_target: 12.0
+  perplexity_acceptable: 30.0
+  training_time_max_hours: 4
+  peak_ram_gb_max: 2.0
+  model_size_mb_max: 5.0
+
+# =============================================================================
+# METRICS TO TRACK
+# =============================================================================
+metrics:
+  - "train_loss"
+  - "val_loss"
+  - "perplexity"
+  - "learning_rate"
+  - "grad_norm"
+  - "tokens_per_second"
+  - "step_time_ms"
+  - "peak_memory_mb"
